@@ -1,0 +1,30 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build-and-test:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore MidtermWebApp.sln
+
+    - name: Build solution
+      run: dotnet build MidtermWebApp.sln --configuration Debug --no-restore
+
+    - name: Run tests
+      run: dotnet test MidtermWebApp.sln --no-build --configuration Debug --verbosity normal
