@@ -7,7 +7,7 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: windows-latest
 
@@ -18,13 +18,13 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Use your actual .NET SDK version here
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore MidtermWebApp.sln
 
     - name: Build solution
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build MidtermWebApp.sln --configuration Debug --no-restore
 
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test MidtermWebApp.sln --no-build --configuration Debug --verbosity normal
